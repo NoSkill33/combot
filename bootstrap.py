@@ -5,7 +5,7 @@ from discord.ext import commands
 import os
 from datetime import datetime
 
-# pobieranie aktualnej daty na starcie programu w celu stworzenia min. pliku z logami
+# pobieranie aktualnej daty na starcie programu w celu stworzenia min. plików z logami itp
 current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 
 # przekształcenie informacji w string
