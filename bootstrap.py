@@ -1,4 +1,7 @@
 import discord
+from discord import app_commands
+from discord.ext import commands
+
 import os
 from datetime import datetime
 
@@ -39,6 +42,7 @@ def messagelog(filename, text):
 # początek classy bota
 class MyClient(discord.Client):
     async def on_ready(self):
+        await tree.sync()
         print(f'[debug] Data & Time: {str_current_datetime}')
         logsave(str_current_datetime, f'Logged on as {self.user}!')
         #print(f'Logged on as {self.user}!')
@@ -47,8 +51,16 @@ class MyClient(discord.Client):
          messagelog(str_current_datetime, f'{message.author}: {message.content}')
          #print(f'Message from {message.author}: {message.content}')
 
+# definicje
 intents = discord.Intents.default()
 intents.message_content = True
-
 client = MyClient(intents=intents)
+tree = app_commands.CommandTree(client)
+
+# przykładowa komenda / testowa komenda
+@tree.command(name = "test", description = "test")
+async def testcommand(interaction: discord.Interaction):
+    await interaction.response.send_message("test")
+
+# startup bota
 client.run(token)
