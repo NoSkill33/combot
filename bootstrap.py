@@ -42,8 +42,10 @@ def messagelog(filename, text):
 # początek classy bota
 class MyClient(discord.Client):
     async def on_ready(self):
-        await tree.sync()
-        print(f'[debug] Data & Time: {str_current_datetime}')
+        # kolejność działań... najpierw najważniejsze rzeczy niech się wczytują a dopiero potem reszta
+        await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
+        await client.change_presence(activity=discord.Game('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
+        print(f'[debug] Data & Time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
         logsave(str_current_datetime, f'Logged on as {self.user}!')
         #print(f'Logged on as {self.user}!')
 
