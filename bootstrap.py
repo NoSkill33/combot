@@ -1,4 +1,5 @@
 import discord
+import os
 
 # ładowanie tokenu z pliku...
 with open('token.txt', 'r') as file:
