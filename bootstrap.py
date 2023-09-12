@@ -1,5 +1,9 @@
 import discord
 
+# ładowanie tokenu z pliku...
+with open('token.txt', 'r') as file:
+    token = file.read()
+
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
@@ -11,4 +15,4 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-client.run('MTE1MTI0MDEyMjYyNTQzMzcxMg.GzH02_.bOKuoeHeUNgJflXp_BQyPxv2i9Gip5KDkYQxOU')
+client.run(token)
