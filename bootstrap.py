@@ -82,11 +82,10 @@ tree = app_commands.CommandTree(client)
 async def testcommand(interaction: discord.Interaction):
     await interaction.response.send_message("test")
 
-
 # komenda Ping odpowiedz pong
-@tree.command(name = "PingPong", description = "PingPong")
+@tree.command(name = "pingpong", description = "PingPong")
 async def PingCommand(interaction: discord.Interaction):
     await interaction.response.send_message("Pong")
 
 # startup bota
-client.run(token)
+client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
