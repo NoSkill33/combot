@@ -27,24 +27,24 @@ with open('token.txt', 'r') as file:
     token = file.read()
 
 # funkcja zapisująca treść do pliku
-def logsave(filename, text):
+def logsave(text):
     # na starcie logsave niech "zdobedzie" aktualna date lol
     actualdate = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
     logs_folder = os.path.join(os.getcwd(), 'logs')
     os.makedirs(logs_folder, exist_ok=True)
 
-    direct = os.path.join(logs_folder, filename)
+    direct = os.path.join(logs_folder, current_datetime)
 
     with open(direct, 'a') as file:
         file.write("[" + actualdate + "] " + text + "\n")
 
-def messagelog(filename, text):
+def messagelog(text):
     # na starcie logsave niech "zdobedzie" aktualna date lol
     actualdate = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
     messages_folder = os.path.join(os.getcwd(), 'messages')
     os.makedirs(messages_folder, exist_ok=True)
 
-    direct = os.path.join(messages_folder, filename)
+    direct = os.path.join(messages_folder, current_datetime)
 
     with open(direct, 'a') as file:
         file.write("[" + actualdate + "] " + text + "\n")
@@ -61,14 +61,14 @@ class MyClient(discord.Client):
         print(f"[debug] Connected with discord api")
         # kolejność działań... najpierw najważniejsze rzeczy niech się wczytują a dopiero potem reszta
         await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
-        await client.change_presence(activity=discord.Game('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
+        await client.change_presence(activity=discord.CustomActivity('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
         print(f'[debug] Data & Time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
-        logsave(str_current_datetime, f'Logged on as {self.user}!')
+        logsave(f'Logged on as {self.user}!')
         print(f"{botname}Bot was successfully loaded")
         #print(f'Logged on as {self.user}!')
 
     async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
-         messagelog(str_current_datetime, f'{message.author}: {message.content}')
+         messagelog(f'{message.author}: {message.content}')
          #print(f'Message from {message.author}: {message.content}')
 
 # definicje
@@ -77,15 +77,14 @@ intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
 
-# przykładowa komenda / testowa komenda
-@tree.command(name = "test", description = "test")
-async def testcommand(interaction: discord.Interaction):
-    await interaction.response.send_message("test")
-
 # komenda Ping odpowiedz pong
-@tree.command(name = "pingpong", description = "PingPong")
-async def PingCommand(interaction: discord.Interaction):
-    await interaction.response.send_message("Pong")
+@tree.command(name = "test", description = "testowa komenda bota")
+async def Testcommand(interaction: discord.Interaction):
+    await interaction.response.send_message("hejka!")
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
