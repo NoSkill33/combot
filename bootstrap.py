@@ -33,7 +33,7 @@ def logsave(text):
     logs_folder = os.path.join(os.getcwd(), 'logs')
     os.makedirs(logs_folder, exist_ok=True)
 
-    direct = os.path.join(logs_folder, current_datetime)
+    direct = os.path.join(logs_folder, current_datetime + ".log")
 
     with open(direct, 'a') as file:
         file.write("[" + actualdate + "] " + text + "\n")
@@ -44,7 +44,7 @@ def messagelog(text):
     messages_folder = os.path.join(os.getcwd(), 'messages')
     os.makedirs(messages_folder, exist_ok=True)
 
-    direct = os.path.join(messages_folder, current_datetime)
+    direct = os.path.join(messages_folder, current_datetime + ".log")
 
     with open(direct, 'a') as file:
         file.write("[" + actualdate + "] " + text + "\n")
