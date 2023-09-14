@@ -64,5 +64,11 @@ tree = app_commands.CommandTree(client)
 async def testcommand(interaction: discord.Interaction):
     await interaction.response.send_message("test")
 
+
+# komenda Ping odpowiedz pong
+@tree.command(name = "PingPong", description = "PingPong")
+async def PingCommand(interaction: discord.Interaction):
+    await interaction.response.send_message("Pong")
+
 # startup bota
 client.run(token)
