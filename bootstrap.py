@@ -13,7 +13,7 @@ current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 # definicje
 version = "[0.0.01] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
-developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+developermode = 0 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
 
 # przekształcenie informacji w string
 str_current_datetime = str(current_datetime)
@@ -56,13 +56,19 @@ class MyClient(discord.Client):
     if developermode == 0: # jeśli edytujemy kod == 0( == nie ) wtedy dopiero odpal aby nie spamiło NAM tym xd
         webbrowser.open_new_tab("https://github.com/NoSkill33/combot")
 
-    print(f"[debug] Connecting with discord api...")
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f"[debug] Connecting with discord api...")
+
     async def on_ready(self): # on_ready to jest prosty event logger... po tym jesli on_ready zostanie wykonany( czyli bot sie odpali ) ma wykonać listę rzeczy np napisanie ze bot został załadowany i tak dalej...
-        print(f"[debug] Connected with discord api")
+        if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle    
+            print(f"[debug] Connected with discord api")
+
         # kolejność działań... najpierw najważniejsze rzeczy niech się wczytują a dopiero potem reszta
         await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
         await client.change_presence(activity=discord.CustomActivity('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
-        print(f'[debug] Data & Time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
+        if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+            print(f'[debug] Data & Time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
+       
         logsave(f'Logged on as {self.user}!')
         print(f"{botname}Bot was successfully loaded")
         #print(f'Logged on as {self.user}!')
@@ -84,7 +90,7 @@ async def Testcommand(interaction: discord.Interaction):
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
-        print(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
