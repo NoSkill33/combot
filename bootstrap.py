@@ -57,7 +57,7 @@ class MyClient(discord.Client):
         webbrowser.open_new_tab("https://github.com/NoSkill33/combot")
 
     print(f"[debug] Connecting with discord api...")
-    async def on_ready(self):
+    async def on_ready(self): # on_ready to jest prosty event logger... po tym jesli on_ready zostanie wykonany( czyli bot sie odpali ) ma wykonać listę rzeczy np napisanie ze bot został załadowany i tak dalej...
         print(f"[debug] Connected with discord api")
         # kolejność działań... najpierw najważniejsze rzeczy niech się wczytują a dopiero potem reszta
         await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
@@ -67,7 +67,7 @@ class MyClient(discord.Client):
         print(f"{botname}Bot was successfully loaded")
         #print(f'Logged on as {self.user}!')
 
-    async def on_message(self, message):
+    async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
          messagelog(str_current_datetime, f'{message.author}: {message.content}')
          #print(f'Message from {message.author}: {message.content}')
 
