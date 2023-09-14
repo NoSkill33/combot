@@ -1,7 +1,12 @@
-h1 align="center">Hi 👋, I'm ComBot</h1>
-- 🔭 I’m currently working on **ComBot**
+<h1 align="center">Hi 👋, I'm ComBot</h1>
 
-- 🌱 I’m currently learning **Python & c#**
+<h2>📄 ComBot is a dedicated companion for your Discord server. Packed with moderation, entertainment, and utility features, ComBot aims to enhance your server's functionality and user experience. Whether you need to manage your community, have some fun, or access useful information, ComBot has got you covered. Invite ComBot to your server today and unlock a world of possibilities!</h2>
+
+
+
+<h3>🔭 We are currently working on **ComBot**</h3>
+
+<h3>🌱 We are currently learning **Python & c#**</h3>
 
 
 
