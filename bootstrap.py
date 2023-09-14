@@ -59,5 +59,10 @@ intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
 
+# przykładowa komenda / testowa komenda
+@tree.command(name = "test", description = "test")
+async def testcommand(interaction: discord.Interaction):
+    await interaction.response.send_message("test")
+
 # startup bota
 client.run(token)
