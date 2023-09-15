@@ -105,9 +105,9 @@ async def Pingcommand(interaction: discord.Interaction):
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 # komenda na id uzytkownika
-@tree.command(name = "userid", description = "userid")
-async def Idcommand(interaction: discord.Interaction):
-    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\nYour name: **{interaction.user.name}**')   
+@tree.command(name = "userinfo", description = "userinfo")
+async def UserInfocommand(interaction: discord.Interaction):
+    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\nYour name: **{interaction.user.name}**\nMember of discord since: **{interaction.user.created_at(year, month)}**\nMember of server since: **{interaction.user.joined_at}**')   
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
