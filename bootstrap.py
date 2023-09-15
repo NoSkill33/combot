@@ -107,7 +107,13 @@ async def Pingcommand(interaction: discord.Interaction):
 # komenda na id uzytkownika
 @tree.command(name = "userinfo", description = "userinfo")
 async def UserInfocommand(interaction: discord.Interaction):
-    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\nYour name: **{interaction.user.name}**\nMember of discord since: **{interaction.user.created_at(year, month)}**\nMember of server since: **{interaction.user.joined_at}**')   
+    creationdate = interaction.user.created_at
+    creationdatebetter = creationdate.strftime("%Y-%m-%d %H-%M-%S")
+
+    joindate = interaction.user.joined_at
+    joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
+    
+    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\nYour name: **{interaction.user.name}**\nMember of discord since: **{creationdatebetter}**\nMember of server since: **{joindatebetter}**')   
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
