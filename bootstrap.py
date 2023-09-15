@@ -96,7 +96,7 @@ async def Testcommand(interaction: discord.Interaction):
 @tree.command(name = "help", description = "pokazuje pomoc(?) xd")
 async def helpcommand(interaction: discord.Interaction):
     sendto = interaction.user.id
-    await interaction.response.send_message("Lista komend została wysłana prywatną wiadomością!")
+    await interaction.response.send_message("Lista komend wysłana została prywatną wiadomością!")
     await interaction.user.send("komenda - opis co robi")
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
