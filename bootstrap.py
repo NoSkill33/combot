@@ -95,9 +95,13 @@ async def Testcommand(interaction: discord.Interaction):
 # komenda help
 @tree.command(name = "help", description = "pokazuje pomoc(?) xd")
 async def helpcommand(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title = "HELP",
+        description = "**Bot** \n /ping - *komenda na ping bota* \n **Info** \n /userinfo - *komenda na informacje*",
+        colour = 0x8daee0)
     sendto = interaction.user.id
     await interaction.response.send_message("Lista komend wysłana została prywatną wiadomością!")
-    await interaction.user.send("komenda - opis co robi")
+    await interaction.user.send(embed=embed)
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
