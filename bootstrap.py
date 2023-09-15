@@ -126,6 +126,18 @@ async def helpcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
+# komenda na tworzenie embed
+@tree.command(name = "embed", description = "tworzenie embed(color podac 0x'hex coloru')")
+async def embedcommand(interaction: discord.Interaction, title: str, description: str, color: int):
+    embed = discord.Embed(title=title, description=description, color=color)
+    await interaction.response.send_message(embed=embed)
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+
+
 # komenda na ping bota
 @tree.command(name = "ping", description = "komenda na ping")
 async def testcommand(interaction: discord.Interaction):
