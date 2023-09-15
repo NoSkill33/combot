@@ -119,15 +119,15 @@ async def testcommand(interaction: discord.Interaction):
 
 # komenda na id uzytkownika
 @tree.command(name = "userinfo", description = "userinfo")
-async def UserInfocommand(interaction: discord.Interaction):
-    creationdate = interaction.user.created_at
+async def UserInfocommand(interaction: discord.Interaction, user: discord.User):
+    creationdate = user.created_at
     creationdatebetter = creationdate.strftime("%Y-%m-%d %H-%M-%S")
 
-    joindate = interaction.user.joined_at
+    joindate = user.joined_at
     joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
     
     await interaction.response.send_message(f'Your id: **{interaction.user.id}**\n\
-Your name: **{interaction.user.name}**\n\
+Your name: **{user.name}**\n\
 Member of discord since: **{creationdatebetter}**\n\
 Member of server since: **{joindatebetter}**')   
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
