@@ -102,7 +102,7 @@ async def helpcommand(interaction: discord.Interaction):
         type = 'rich')
         
     sendto = interaction.user.id
-    await interaction.response.send_message("Lista komend wysłana została prywatną wiadomością!")
+    await interaction.response.send_message("Lista komend wysłana została wysłana prywatnie do użytkownika!")
     await interaction.user.send(embed=embed)
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
@@ -121,7 +121,10 @@ async def testcommand(interaction: discord.Interaction):
 
 # komenda na id uzytkownika
 @tree.command(name="userinfo", description="userinfo")
-async def UserInfocommand(interaction: discord.Interaction, user: discord.User):
+async def UserInfocommand(interaction: discord.Interaction, user: discord.User = None):
+    if user is None:
+        user = interaction.user
+
     creationdate = user.created_at
     creationdatebetter = creationdate.strftime("%Y-%m-%d %H-%M-%S")
 
@@ -151,8 +154,7 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User):
     embed.set_thumbnail(url=avatar_url)
 
     await interaction.response.send_message(embed=embed)
-    
-    await interaction.response.send_message(embed=embed)
+
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
 
