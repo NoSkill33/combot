@@ -13,7 +13,7 @@ current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 # definicje
 version = "[0.0.01] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
-developermode = 0 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
 
 # przekształcenie informacji w string
 str_current_datetime = str(current_datetime)
@@ -104,6 +104,14 @@ async def Pingcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
+# komenda na id uzytkownika
+@tree.command(name = "userid", description = "userid")
+async def Idcommand(interaction: discord.Interaction):
+    await interaction.response.send_message(f'You id: **{interaction.user.id}**')   
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 
 # startup bota
