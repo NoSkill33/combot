@@ -83,7 +83,7 @@ intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
 
-# komenda Ping odpowiedz pong
+# komenda test
 @tree.command(name = "test", description = "testowa komenda bota")
 async def Testcommand(interaction: discord.Interaction):
     await interaction.response.send_message("hejka!")
@@ -92,11 +92,20 @@ async def Testcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
+# komenda help
+@tree.command(name = "help", description = "pokazuje pomoc(?) xd")
+async def helpcommand(interaction: discord.Interaction):
+    sendto = interaction.user.id
+    await interaction.response.send_message("Lista komend została wysłana prywatną wiadomością!")
+    await interaction.user.send("komenda - opis co robi")
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 # komenda na ping bota
 @tree.command(name = "ping", description = "komenda na ping")
-async def Pingcommand(interaction: discord.Interaction):
+async def testcommand(interaction: discord.Interaction):
     pinglatency = format(round(client.latency, 1))
     await interaction.response.send_message(f'{interaction.user.id} Ping to {pinglatency}!')
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
