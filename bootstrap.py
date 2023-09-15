@@ -13,7 +13,7 @@ current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 # definicje
 version = "[0.0.01] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
-developermode = 0 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
 
 # przekształcenie informacji w string
 str_current_datetime = str(current_datetime)
@@ -73,8 +73,8 @@ class MyClient(discord.Client):
         print(f"{botname}Bot was successfully loaded")
         #print(f'Logged on as {self.user}!')
 
-    async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
-         messagelog(f'{message.author}: {message.content}')
+    #async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
+         #messagelog(f'{message.author}: {message.content}')
          #print(f'Message from {message.author}: {message.content}')
 
 # definicje
@@ -103,8 +103,6 @@ async def Pingcommand(interaction: discord.Interaction):
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-
-
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
