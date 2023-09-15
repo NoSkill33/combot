@@ -73,8 +73,8 @@ class MyClient(discord.Client):
         print(f"{botname}Bot was successfully loaded")
         #print(f'Logged on as {self.user}!')
 
-    #async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
-         #messagelog(f'{message.author}: {message.content}')
+    async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
+         messagelog(f'{message.author}: {message.content}')
          #print(f'Message from {message.author}: {message.content}')
 
 # definicje
@@ -103,6 +103,16 @@ async def Pingcommand(interaction: discord.Interaction):
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+
+# komenda na id uzytkownika
+@tree.command(name = "userid", description = "userid")
+async def Idcommand(interaction: discord.Interaction):
+    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\nYour name: **{interaction.user.name}**')   
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
