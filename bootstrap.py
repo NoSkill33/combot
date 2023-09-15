@@ -122,12 +122,14 @@ async def UserInfocommand(interaction: discord.Interaction):
     joindate = interaction.user.joined_at
     joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
     
-    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\nYour name: **{interaction.user.name}**\nMember of discord since: **{creationdatebetter}**\nMember of server since: **{joindatebetter}**')   
+    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\n\
+Your name: **{interaction.user.name}**\n\
+Member of discord since: **{creationdatebetter}**\n\
+Member of server since: **{joindatebetter}**')   
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
