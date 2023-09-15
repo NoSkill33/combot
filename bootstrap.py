@@ -46,7 +46,7 @@ def messagelog(text):
 
     direct = os.path.join(messages_folder, current_datetime + ".log")
 
-    with open(direct, 'a') as file:
+    with open(direct, 'a', encoding="utf-8") as file:
         file.write("[" + actualdate + "] " + text + "\n")
 # koniec tej funkcji
 
