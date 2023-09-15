@@ -120,20 +120,39 @@ async def testcommand(interaction: discord.Interaction):
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 # komenda na id uzytkownika
-@tree.command(name = "userinfo", description = "userinfo")
+@tree.command(name="userinfo", description="userinfo")
 async def UserInfocommand(interaction: discord.Interaction, user: discord.User):
-
-
     creationdate = user.created_at
     creationdatebetter = creationdate.strftime("%Y-%m-%d %H-%M-%S")
 
-    joindate = user.joined_at
-    joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
+    if user.guild:
+        joindate = user.joined_at
+        joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
+    else:
+        joindatebetter = "Not a member of any server"
+
+    avatar_url = user.avatar.url if user.avatar else user.default_avatar.url
+    # Pobierz kolor banera użytkownika, jeśli jest dostępny
+    banner_color = user.banner.color if user.banner else None
+
+    # Ustaw kolor embeda na kolor banera lub na inny domyślny kolor
+    embed_color = banner_color
+
+    embed = discord.Embed(
+        title="User Info",
+        description=f'Id: **{user.id}**\n'
+                    f'Name: **{user.name}**\n'
+                    f'Member of discord since: **{creationdatebetter}**\n'
+                    f'Member of server since: **{joindatebetter}**',
+        colour = embed_color
+    )
+
+    # Ustaw awatar użytkownika jako miniaturę embeda
+    embed.set_thumbnail(url=avatar_url)
+
+    await interaction.response.send_message(embed=embed)
     
-    await interaction.response.send_message(f'Id: **{user.id}**\n\
-Name: **{user.name}**\n\
-Member of discord since: **{creationdatebetter}**\n\
-Member of server since: **{joindatebetter}**')   
+    await interaction.response.send_message(embed=embed)
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
 
