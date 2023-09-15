@@ -97,8 +97,10 @@ async def Testcommand(interaction: discord.Interaction):
 async def helpcommand(interaction: discord.Interaction):
     embed = discord.Embed(
         title = "HELP",
-        description = "**Bot** \n /ping - *komenda na ping bota* \n **Info** \n /userinfo - *komenda na informacje*",
-        colour = 0x8daee0)
+        description = "**🤖Bot** \n /ping - *komenda na ping bota* \n **Info** \n /userinfo - *komenda na informacje*",
+        colour = 0x8daee0,
+        type = 'rich')
+        
     sendto = interaction.user.id
     await interaction.response.send_message("Lista komend wysłana została prywatną wiadomością!")
     await interaction.user.send(embed=embed)
@@ -120,17 +122,20 @@ async def testcommand(interaction: discord.Interaction):
 # komenda na id uzytkownika
 @tree.command(name = "userinfo", description = "userinfo")
 async def UserInfocommand(interaction: discord.Interaction, user: discord.User):
+
+
     creationdate = user.created_at
     creationdatebetter = creationdate.strftime("%Y-%m-%d %H-%M-%S")
 
     joindate = user.joined_at
     joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
     
-    await interaction.response.send_message(f'Your id: **{interaction.user.id}**\n\
-Your name: **{user.name}**\n\
+    await interaction.response.send_message(f'Id: **{user.id}**\n\
+Name: **{user.name}**\n\
 Member of discord since: **{creationdatebetter}**\n\
 Member of server since: **{joindatebetter}**')   
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
