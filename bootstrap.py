@@ -1,10 +1,11 @@
 import discord
 from discord import app_commands
-from discord.ext import commands
+from discord.utils import get
 
 import webbrowser
 
 import os
+import time
 from datetime import datetime
 
 # pobieranie aktualnej daty na starcie programu w celu stworzenia min. plików z logami itp
@@ -82,6 +83,22 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
+
+# komenda admin
+storeussage = {}
+@tree.command(name = "admin", description = "oznacza administratora")
+async def pingadmin(interaction: discord.Interaction):
+    cooldownperuser = 3600
+    inforole = get(interaction.guild.roles, name = 'pingadmin')
+    if interaction.user.id not in storeussage or time.time() - storeussage[interaction.user.id] >= cooldownperuser:
+        storeussage[interaction.user.id] = time.time()
+        await interaction.response.send_message(f'{inforole.mention}')
+        logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+        if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+            print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+    else:
+        await interaction.response.send_message(f'nie mozesz tak często używać tej komendy!')
 
 # komenda test
 @tree.command(name = "test", description = "testowa komenda bota")
