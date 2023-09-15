@@ -11,7 +11,7 @@ from datetime import datetime
 current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 
 # definicje
-version = "[0.0.01] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
+version = "[0.0.02] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
 developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
 
@@ -98,7 +98,7 @@ async def helpcommand(interaction: discord.Interaction):
     embed = discord.Embed(
         title = "HELP",
         description = "**🤖Bot** \n /ping - *komenda na ping bota* \n **Info** \n /userinfo - *komenda na informacje*",
-        colour = 0x8daee0,
+        color = 0x8daee0,
         type = 'rich')
         
     sendto = interaction.user.id
@@ -135,11 +135,9 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User =
         joindatebetter = "Not a member of any server"
 
     avatar_url = user.avatar.url if user.avatar else user.default_avatar.url
-    # Pobierz kolor banera użytkownika, jeśli jest dostępny
-    banner_color = user.banner.color if user.banner else None
 
     # Ustaw kolor embeda na kolor banera lub na inny domyślny kolor
-    embed_color = banner_color
+    embed_color = 0x8daee0
 
     embed = discord.Embed(
         title="User Info",
