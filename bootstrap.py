@@ -5,6 +5,7 @@ from discord.utils import get
 import webbrowser
 import random
 import os
+import ctypes
 import logging
 
 import time
@@ -17,6 +18,9 @@ current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 version = "[0.0.02] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
 developermode = 0 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+
+# ustawia nazwe konsoli na combot - wersja bota
+ctypes.windll.kernel32.SetConsoleTitleW(f'combot - {version}')
 
 # pozbywamy się powiadomień w ten sposób od discorda :)
 logging.basicConfig(level=logging.WARNING)
