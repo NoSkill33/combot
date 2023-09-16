@@ -84,6 +84,55 @@ intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
 
+# komenda na kalulator
+import discord
+
+import discord
+
+@tree.command(name="calculator", description="Kalkulator")
+async def calculate(interaction: discord.Interaction, num1: str, operation: str, num2: str):
+    if operation not in ['+', '-', '*', '/']:
+        await interaction.response.send_message('Podaj prawidłową operację (+, -, *, /).')
+        return
+    
+    try:
+        # Sprawdzenie, czy num1 i num2 są zbyt długie
+        if len(num1) > 12:
+            await interaction.response.send_message('Błąd: "num1" nie może mieć więcej niż 12 znaków.')
+            return
+        if len(num2) > 12:
+            await interaction.response.send_message('Błąd: "num2" nie może mieć więcej niż 12 znaków.')
+            return
+        
+        # Konwersja num1 i num2 na float
+        num1 = float(num1)
+        num2 = float(num2)
+        
+        if operation == '+':
+            result = num1 + num2
+        elif operation == '-':
+            result = num1 - num2
+        elif operation == '*':
+            result = num1 * num2
+        elif operation == '/':
+            if num2 == 0:
+                await interaction.response.send_message('Nie można dzielić przez zero.')
+                return
+            result = num1 / num2
+
+        await interaction.response.send_message(f'{num1:.2f} {operation} {num2:.2f} = {result:.2f}')
+    except ValueError:
+        await interaction.response.send_message('Błąd: Podane wartości num1 i num2 nie są liczbami.')
+    except Exception as e:
+        await interaction.response.send_message(f'Wystąpił błąd podczas obliczeń: {str(e)}')
+
+
+
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
 # komenda admin
 storeussage = {}
 @tree.command(name = "admin", description = "oznacza administratora")
