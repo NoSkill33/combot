@@ -204,7 +204,8 @@ async def testcommand(interaction: discord.Interaction):
 # komenda na tworzenie kanalu
 @tree.command(name="createchannel", description="tworzenie kanału")
 async def createchannel(interaction: discord.Interaction, name: str, category_name: str = None):
-    if interaction.user.guild_permissions.manage_channels:
+    mapermisje = interaction.user.guild_permissions.manage_channels
+    if mapermisje:
         guild = interaction.guild
         
         # Szukamy kategorii o podanej nazwie
@@ -213,18 +214,21 @@ async def createchannel(interaction: discord.Interaction, name: str, category_na
         if category:
             # Jeśli kategoria istnieje, tworzymy kanał w tej kategorii
             await guild.create_text_channel(name, category=category)
-            await interaction.response.send_message(content=f'Kanał "{name}" został utworzony w kategorii "{category_name}".')
+            await interaction.response.send_message(f'Kanał "{name}" został utworzony w kategorii "{category_name}".')
         else:
             await guild.create_text_channel(name, category=None)
-            await interaction.response.send_message(content=f'Kanał "{name}" został utworzony.')
+            await interaction.response.send_message(f'Kanał "{name}" został utworzony.')
     else:
-        await interaction.response.send_message(content='Nie masz do tego uprawnień!')
+        await interaction.response.send_message('Nie masz do tego uprawnień!')
 
 
-
-    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
-        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-
+        if mapermisje:
+            logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+            if developermode == 1:
+                print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+        else:
+            if developermode == 1:
+                print(f'[debug] {interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
 
 # komenda na id uzytkownika
 @tree.command(name="userinfo", description="userinfo")
@@ -310,6 +314,27 @@ async def rollcom(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
+
+# komenda na setrole
+@tree.command(name="setrole", description="ustawia role")
+async def rollcom(interaction: discord.Interaction, user: discord.User, role: discord.Role):
+    mapermisje = interaction.user.guild_permissions.manage_roles
+    if mapermisje:
+        await user.add_roles(role)
+        await interaction.response.send_message(f'Ustawiłeś {user} rolę {role}.')
+    else:
+        await interaction.response.send_message(f'Nie masz do tego uprawnień!')
+
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+
+    if mapermisje:
+        logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+        if developermode == 1:
+            print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+    else:
+        if developermode == 1:
+            print(f'[debug] {interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
