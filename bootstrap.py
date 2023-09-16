@@ -296,9 +296,14 @@ async def rollcom(interaction: discord.Interaction):
 
     n1 = random.randint(1, 6); n2 = random.randint(1, 6); n3 = random.randint(1, 6)
     sum = n1 + n2 + n3
+    embed_color = 0x8daee0
 
-    await interaction.response.send_message(f'Wyrzuciles: {n1}, {n2}, {n3}\nRazem: {sum}!')
-
+    embed = discord.Embed(
+        title="**Rzut**",
+        description=f'Wyrzuciles: {n1}, {n2}, {n3}\nRazem: **{sum}**!',
+        colour = embed_color
+    )
+    await interaction.response.send_message(embed=embed)
 
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
