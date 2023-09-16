@@ -332,7 +332,7 @@ async def rollcom(interaction: discord.Interaction, user: discord.User, role: di
     mapermisje = interaction.user.guild_permissions.manage_roles
     if mapermisje:
         await user.add_roles(role)
-        await interaction.response.send_message(f'Ustawiłeś {user} rolę {role}.')
+        await interaction.response.send_message(f'Ustawiłeś "{user}" rolę "{role}".')
     else:
         await interaction.response.send_message(f'Nie masz do tego uprawnień!')
 
