@@ -204,7 +204,7 @@ async def testcommand(interaction: discord.Interaction):
 # komenda na tworzenie kanalu
 @tree.command(name="createchannel", description="tworzenie kanału")
 async def createchannel(interaction: discord.Interaction, name: str, category_name: str = None):
-    if interaction.user.guild_permissions.administrator:
+    if interaction.user.guild_permissions.manage_channels:
         guild = interaction.guild
         
         # Szukamy kategorii o podanej nazwie
@@ -218,7 +218,7 @@ async def createchannel(interaction: discord.Interaction, name: str, category_na
             await guild.create_text_channel(name, category=None)
             await interaction.response.send_message(content=f'Kanał "{name}" został utworzony.')
     else:
-        await interaction.response.send_message(content='Nie masz do tego uprawnień')
+        await interaction.response.send_message(content='Nie masz do tego uprawnień!')
 
 
 
