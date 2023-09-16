@@ -8,26 +8,42 @@ import os
 import time
 from datetime import datetime
 
-# pobieranie aktualnej daty na starcie programu w celu stworzenia min. plików z logami itp
+
+#---------------------------POBIERANIE DATY NA STRACIE PROGRAMU BO LOGI ITP-----------------------------------------------
 current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 
-# definicje
+
+
+
+#------------------------------------------------DEFINICJE------------------------------------------------------------------
 version = "[0.0.02] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
 developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
 
-# przekształcenie informacji w string
+
+
+
+#------------------------------------------ZMIENIANIE NA STRING-----------------------------------------------------------
 str_current_datetime = str(current_datetime)
 
-# ścieżki do folderów(?)
+
+
+
+#----------------------------------------ŚCIEŻKI DO FOLDERÓW--------------------------------------------------------------
 logs_folder = os.path.join(os.getcwd(), 'logs')
 messages_folder = os.path.join(os.getcwd(), 'messages')
 
-# ładowanie tokenu z pliku...
+
+
+
+#---------------------------------------ŁADOWANIE TOKNU Z PLIKU----------------------------------------------------------
 with open('token.txt', 'r') as file:
     token = file.read()
 
-# funkcja zapisująca treść do pliku
+
+
+
+#------------------------------------------ZAPISUJE TREŚĆ DO PLIKU--------------------------------------------------------
 def logsave(text):
     # na starcie logsave niech "zdobedzie" aktualna date lol
     actualdate = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
@@ -49,9 +65,9 @@ def messagelog(text):
 
     with open(direct, 'a', encoding="utf-8") as file:
         file.write("[" + actualdate + "] " + text + "\n")
-# koniec tej funkcji
 
-# początek classy bota
+
+#----------------------------------------POCZĄTEK KLASY BOTA--------------------------------------------------------------
 class MyClient(discord.Client):
     # otwieranie oficjalnej strony bota tak zwana "reklama"
     if developermode == 0: # jeśli edytujemy kod == 0( == nie ) wtedy dopiero odpal aby nie spamiło NAM tym xd
@@ -78,13 +94,23 @@ class MyClient(discord.Client):
          messagelog(f'{message.author}: {message.content}')
          #print(f'Message from {message.author}: {message.content}')
 
-# definicje
+#--------------------------------------------DEFINICJE-------------------------------------------------------------------
 intents = discord.Intents.default()
 intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
 
-# komenda na kalulator
+
+
+# -------------------------------------------------K O M E N D Y----------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------K O M E N D Y----------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------K O M E N D Y----------------------------------------------------------
+
+
+
+#--------------------------------------------KOMENDA NA KALKULATOR--------------------------------------------------------
 import discord
 
 import discord
@@ -133,7 +159,9 @@ async def calculate(interaction: discord.Interaction, num1: str, operation: str,
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
-# komenda admin
+
+
+#---------------------------------------------KOMENDA NA PING ADMINA------------------------------------------------
 storeussage = {}
 @tree.command(name = "admin", description = "oznacza administratora")
 async def pingadmin(interaction: discord.Interaction):
@@ -175,7 +203,10 @@ async def helpcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
-# komenda na tworzenie embed
+
+
+
+#----------------------------------------KOEMNDA NA TWORZENIE EMBED-------------------------------------------------------
 @tree.command(name = "embed", description = "tworzenie embed(color podac 0x'hex coloru')")
 async def embedcommand(interaction: discord.Interaction, title: str, description: str, color: int):
     embed = discord.Embed(title=title, description=description, color=color)
@@ -187,7 +218,9 @@ async def embedcommand(interaction: discord.Interaction, title: str, description
 
 
 
-# komenda na ping bota
+
+
+#--------------------------------------------KOEMNDA NA PING BOTA---------------------------------------------------------
 @tree.command(name = "ping", description = "komenda na ping")
 async def testcommand(interaction: discord.Interaction):
     pinglatency = format(round(client.latency, 1))
@@ -197,7 +230,12 @@ async def testcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
-# komenda na id uzytkownika
+
+
+
+
+
+#--------------------------------------------KOMENDA NA USER INFO---------------------------------------------------------
 @tree.command(name="userinfo", description="userinfo")
 async def UserInfocommand(interaction: discord.Interaction, user: discord.User = None):
     if user is None:
@@ -237,5 +275,8 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User =
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
-# startup bota
+
+
+
+#---------------------------------------------STARTUP BOTA----------------------------------------------------------------
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
