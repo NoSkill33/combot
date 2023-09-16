@@ -3,10 +3,9 @@ from discord import app_commands
 from discord.utils import get
 
 import webbrowser
-
 import random
-
 import os
+import logging
 
 import time
 from datetime import datetime
@@ -17,7 +16,13 @@ current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 # definicje
 version = "[0.0.02] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
-developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+developermode = 0 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+
+# pozbywamy się powiadomień w ten sposób od discorda :)
+logging.basicConfig(level=logging.WARNING)
+logging.getLogger('discord').setLevel(logging.WARNING)
+logging.getLogger('discord.client').setLevel(logging.WARNING)
+logging.getLogger('discord.gateway').setLevel(logging.WARNING)
 
 # przekształcenie informacji w string
 str_current_datetime = str(current_datetime)
@@ -63,18 +68,22 @@ class MyClient(discord.Client):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f"[debug] Connecting with discord api...")
 
+    print(f'{botname}Logging in using {token[:18]}********** token')
+
     async def on_ready(self): # on_ready to jest prosty event logger... po tym jesli on_ready zostanie wykonany( czyli bot sie odpali ) ma wykonać listę rzeczy np napisanie ze bot został załadowany i tak dalej...
         if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle    
-            print(f"[debug] Connected with discord api")
+            print(f'[debug] Connected with discord api')
+            
+        print(f'{botname}Please wait...')
 
         # kolejność działań... najpierw najważniejsze rzeczy niech się wczytują a dopiero potem reszta
         await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
         await client.change_presence(activity=discord.CustomActivity('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
         if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
             print(f'[debug] Data & Time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
-       
-        logsave(f'Logged on as {self.user}!')
-        print(f"{botname}Bot was successfully loaded")
+            print(f'[debug] Listening to {len(client.guilds)} servers')
+        logsave(f'Logged on as {self.user}, lisetning to {len(client.guilds)} servers!')
+        print(f"{botname}Bot is ready!")
         #print(f'Logged on as {self.user}!')
 
     async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
@@ -88,10 +97,6 @@ client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
 
 # komenda na kalulator
-import discord
-
-import discord
-
 @tree.command(name="calculator", description="Kalkulator")
 async def calculate(interaction: discord.Interaction, num1: str, operation: str, num2: str):
     if operation not in ['+', '-', '*', '/']:
