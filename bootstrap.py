@@ -200,6 +200,33 @@ async def testcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
+
+# komenda na tworzenie kanalu
+@tree.command(name="createchannel", description="tworzenie kanału")
+async def createchannel(interaction: discord.Interaction, name: str, category_name: str):
+    if interaction.user.guild_permissions.administrator:
+        guild = interaction.guild
+        
+        # Szukamy kategorii o podanej nazwie
+        category = discord.utils.get(guild.categories, name=category_name)
+        
+        if category:
+            # Jeśli kategoria istnieje, tworzymy kanał w tej kategorii
+            await guild.create_text_channel(name, category=category)
+            await interaction.response.send_message(content=f'Kanał "{name}" został utworzony w kategorii "{category_name}".')
+        else:
+            await interaction.response.send_message(content=f'Nie znaleziono kategorii o nazwie "{category_name}".')
+    else:
+        await interaction.response.send_message(content='Nie masz do tego uprawnień')
+
+
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+
+
+
+
 # komenda na id uzytkownika
 @tree.command(name="userinfo", description="userinfo")
 async def UserInfocommand(interaction: discord.Interaction, user: discord.User = None):
