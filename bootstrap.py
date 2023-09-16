@@ -80,8 +80,9 @@ class MyClient(discord.Client):
         await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
         await client.change_presence(activity=discord.CustomActivity('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
         if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
-            print(f'[debug] Data & Time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
+            print(f'[debug] Saved data & time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
             print(f'[debug] Listening to {len(client.guilds)} servers')
+        
         logsave(f'Logged on as {self.user}, lisetning to {len(client.guilds)} servers!')
         print(f"{botname}Bot is ready!")
         #print(f'Logged on as {self.user}!')
