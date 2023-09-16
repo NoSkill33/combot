@@ -227,6 +227,7 @@ async def createchannel(interaction: discord.Interaction, name: str, category_na
             if developermode == 1:
                 print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
         else:
+            logsave(f'{interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
             if developermode == 1:
                 print(f'[debug] {interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
 
@@ -338,6 +339,7 @@ async def rollcom(interaction: discord.Interaction, user: discord.User, role: di
         if developermode == 1:
             print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
     else:
+        logsave(f'{interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
         if developermode == 1:
             print(f'[debug] {interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
 
