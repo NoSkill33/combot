@@ -4,7 +4,10 @@ from discord.utils import get
 
 import webbrowser
 
+import random
+
 import os
+
 import time
 from datetime import datetime
 
@@ -222,7 +225,8 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User =
         description=f'Id: **{user.id}**\n'
                     f'Name: **{user.name}**\n'
                     f'Member of discord since: **{creationdatebetter}**\n'
-                    f'Member of server since: **{joindatebetter}**',
+                    f'Member of server since: **{joindatebetter}**\n'
+                    f'Server role: **{user.top_role}**',
         colour = embed_color
     )
 
@@ -236,6 +240,45 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User =
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+
+# komenda na info o serwerze
+#...
+
+# komenda na iq
+@tree.command(name="iq", description="pokazuje iq")
+async def iqcom(interaction: discord.Interaction):
+
+    if interaction.user.id == 741339798500802572: # mieszko
+        await interaction.response.send_message(f'Twoj wynik iq: {random.randint(125, 150)}!')
+    elif interaction.user.id == 886353376957321307: # noskill
+        await interaction.response.send_message(f'Twoj wynik iq: {random.randint(125, 150)}!')
+    else: # inni XD
+        await interaction.response.send_message(f'Twoj wynik iq: {random.randint(15, 125)}!')
+
+
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+
+
+# komenda na rzut kostkami
+@tree.command(name="roll", description="rzut kostkami")
+async def rollcom(interaction: discord.Interaction):
+
+    n1 = random.randint(1, 6); n2 = random.randint(1, 6); n3 = random.randint(1, 6)
+    sum = n1 + n2 + n3
+
+    await interaction.response.send_message(f'Wyrzuciles: {n1}, {n2}, {n3}\nRazem: {sum}!')
+
+
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
+
 
 # startup bota
 client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
