@@ -216,7 +216,7 @@ async def createchannel(interaction: discord.Interaction, name: str, category_na
             await interaction.response.send_message(content=f'Kanał "{name}" został utworzony w kategorii "{category_name}".')
         else:
             await guild.create_text_channel(name, category=None)
-            await interaction.response.send_message(content=f'Kanał "{name}" został utworzony!.')
+            await interaction.response.send_message(content=f'Kanał "{name}" został utworzony.')
     else:
         await interaction.response.send_message(content='Nie masz do tego uprawnień')
 
