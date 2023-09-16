@@ -203,7 +203,7 @@ async def testcommand(interaction: discord.Interaction):
 
 # komenda na tworzenie kanalu
 @tree.command(name="createchannel", description="tworzenie kanału")
-async def createchannel(interaction: discord.Interaction, name: str, category_name: str):
+async def createchannel(interaction: discord.Interaction, name: str, category_name: str = None):
     if interaction.user.guild_permissions.administrator:
         guild = interaction.guild
         
@@ -215,7 +215,8 @@ async def createchannel(interaction: discord.Interaction, name: str, category_na
             await guild.create_text_channel(name, category=category)
             await interaction.response.send_message(content=f'Kanał "{name}" został utworzony w kategorii "{category_name}".')
         else:
-            await interaction.response.send_message(content=f'Nie znaleziono kategorii o nazwie "{category_name}".')
+            await guild.create_text_channel(name, category=None)
+            await interaction.response.send_message(content=f'Kanał "{name}" został utworzony!.')
     else:
         await interaction.response.send_message(content='Nie masz do tego uprawnień')
 
@@ -223,8 +224,6 @@ async def createchannel(interaction: discord.Interaction, name: str, category_na
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-
-
 
 
 # komenda na id uzytkownika
@@ -247,13 +246,18 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User =
     # Ustaw kolor embeda na kolor banera lub na inny domyślny kolor
     embed_color = 0x8daee0
 
+    if user.guild_permissions.administrator:
+        isadmin = "(administrator)"
+    else:
+        isadmin = ""
+
     embed = discord.Embed(
         title="User Info",
         description=f'Id: **{user.id}**\n'
                     f'Name: **{user.name}**\n'
                     f'Member of discord since: **{creationdatebetter}**\n'
                     f'Member of server since: **{joindatebetter}**\n'
-                    f'Server role: **{user.top_role}**',
+                    f'Server role: **{user.top_role} {isadmin}**',
         colour = embed_color
     )
 
