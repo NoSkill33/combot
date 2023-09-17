@@ -152,6 +152,10 @@ storeussage = {}
 async def pingadmin(interaction: discord.Interaction):
     cooldownperuser = 800
     inforole = get(interaction.guild.roles, name = 'pingadmin')
+    if inforole is None:
+        await interaction.response.send_message(f'Aby uzyc tej komendy to trzeba stwotzyc role o nazwie "pingadmin"')
+        return
+    
     if interaction.user.id not in storeussage or time.time() - storeussage[interaction.user.id] >= cooldownperuser:
         storeussage[interaction.user.id] = time.time()
         await interaction.response.send_message(f'{inforole.mention}')
