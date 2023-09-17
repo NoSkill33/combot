@@ -220,7 +220,7 @@ async def UserInfocommand(interaction: discord.Interaction, user: discord.User =
         joindate = user.joined_at
         joindatebetter = joindate.strftime("%Y-%m-%d %H-%M-%S")
     else:
-        joindatebetter = "Not a member of any server"
+        joindatebetter = "Not a member of server"
 
     avatar_url = user.avatar.url if user.avatar else user.default_avatar.url
 
