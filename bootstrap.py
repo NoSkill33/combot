@@ -17,7 +17,7 @@ current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 # definicje
 version = "[0.0.02] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
-developermode = 0 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
+developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
 
 # ustawia nazwe konsoli na combot - wersja bota
 ctypes.windll.kernel32.SetConsoleTitleW(f'combot - {version}')
@@ -162,14 +162,6 @@ async def pingadmin(interaction: discord.Interaction):
     else:
         await interaction.response.send_message(f'nie tak często!')
 
-# komenda test
-@tree.command(name = "test", description = "testowa komenda bota")
-async def Testcommand(interaction: discord.Interaction):
-    await interaction.response.send_message("hejka!")
-    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
-
-    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
-        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 # komenda help
 @tree.command(name = "help", description = "pokazuje pomoc(?) xd")
@@ -210,36 +202,6 @@ async def testcommand(interaction: discord.Interaction):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
-
-# komenda na tworzenie kanalu
-@tree.command(name="createchannel", description="tworzenie kanału")
-async def createchannel(interaction: discord.Interaction, name: str, category_name: str = None):
-    mapermisje = interaction.user.guild_permissions.manage_channels
-    if mapermisje:
-        guild = interaction.guild
-        
-        # Szukamy kategorii o podanej nazwie
-        category = discord.utils.get(guild.categories, name=category_name)
-        
-        if category:
-            # Jeśli kategoria istnieje, tworzymy kanał w tej kategorii
-            await guild.create_text_channel(name, category=category)
-            await interaction.response.send_message(f'Kanał "{name}" został utworzony w kategorii "{category_name}".')
-        else:
-            await guild.create_text_channel(name, category=None)
-            await interaction.response.send_message(f'Kanał "{name}" został utworzony.')
-    else:
-        await interaction.response.send_message('Nie masz do tego uprawnień!')
-
-
-        if mapermisje:
-            logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
-            if developermode == 1:
-                print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-        else:
-            logsave(f'{interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
-            if developermode == 1:
-                print(f'[debug] {interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
 
 # komenda na id uzytkownika
 @tree.command(name="userinfo", description="userinfo")
@@ -331,64 +293,31 @@ async def rollcom(interaction: discord.Interaction):
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 
-# komenda na setrole
-@tree.command(name="setrole", description="ustawia role")
-async def rollcom(interaction: discord.Interaction, user: discord.User, role: discord.Role):
-    mapermisje = interaction.user.guild_permissions.manage_roles
-    if mapermisje:
-        await user.add_roles(role)
-        await interaction.response.send_message(f'Ustawiłeś {user.mention} rolę {role.mention}.')
-    else:
-        await interaction.response.send_message(f'Nie masz do tego uprawnień!')
-
-    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
-
-
-    if mapermisje:
-        logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
-        if developermode == 1:
-            print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-    else:
-        logsave(f'{interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
-        if developermode == 1:
-            print(f'[debug] {interaction.user.name}({interaction.user.id}) tried to use {interaction.command.name} command!')
-
-# koemnda na usuwanie kanalu
-@tree.command(name="delchannel", description="Komenda na usuwanie kanału")
-async def DelChannelCommand(interaction: discord.Interaction, channel: discord.TextChannel):
-    mapermisje = interaction.user.guild_permissions.manage_channels
-
-    existing_channel = discord.utils.get(interaction.guild.channels, name=channel.name)
-
-    if existing_channel is not None and mapermisje:
-        await existing_channel.delete()
-        await interaction.response.send_message(f'Kanał "{channel.name}" został usunięty.')
-    elif existing_channel is None:
-        await interaction.response.send_message('Taki kanał nie istnieje.')
-    else:
-        await interaction.response.send_message('Nie masz odpowiednich uprawnień do usunięcia tego kanału.')
-    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
-
-
-    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
-        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
-
-
-
-# koemenda na role
-@tree.command(name="delrole", description="Komenda na usuwanie roli")
-async def delrole(interaction: discord.Interaction, user: discord.Member, role: discord.Role):
+# koemnda na zarzadzanie rolami
+@tree.command(name="role", description="Komenda na zarządzanie rolami")
+async def role(interaction: discord.Interaction, option: str, user: discord.Member, role: discord.Role):
     mapermisje = interaction.user.guild_permissions.manage_roles
     
     if mapermisje:
-        # Sprawdzamy, czy użytkownik ma daną rolę
-        if role in user.roles:
-            await user.remove_roles(role)
-            await interaction.response.send_message(f'Usunięto rolę {role.mention} użytkownikowi {user.mention}.')
+        if option == "add":
+            if role not in user.roles:
+                await user.add_roles(role)
+                await interaction.response.send_message(f'Dodano rolę {role.mention} użytkownikowi {user.mention}.')
+            else:
+                await interaction.response.send_message(f'Użytkownik {user.mention} już ma rolę {role.mention}.')
+        elif option == "del":
+            if role in user.roles:
+                await user.remove_roles(role)
+                await interaction.response.send_message(f'Usunięto rolę {role.mention} użytkownikowi {user.mention}.')
+            else:
+                await interaction.response.send_message(f'Użytkownik {user.mention} nie ma roli {role.mention}.')
         else:
-            await interaction.response.send_message(f'Użytkownik {user.mention} nie ma roli {role.mention}.')
+            await interaction.response.send_message('Nieprawidłowa opcja. Dostępne opcje to "add" i "del".')
     else:
-        await interaction.response.send_message('Nie masz odpowiednich uprawnień do usuwania roli.')
+        await interaction.response.send_message('Nie masz odpowiednich uprawnień do zarządzania rolami.')
+
+ 
+
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
 
@@ -396,6 +325,48 @@ async def delrole(interaction: discord.Interaction, user: discord.Member, role: 
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 
+# koemnda na zarzadzanie kanalami
+@tree.command(name="channel", description="Komenda na zarządzanie kanałami")
+async def channel(interaction: discord.Interaction, option: str, channel_name: str):
+    mapermisje = interaction.user.guild_permissions.manage_channels
+    
+    if mapermisje:
+        if option == "add":
+            try:
+                # Tworzymy kanał tekstowy
+                new_channel = await interaction.guild.create_text_channel(name=channel_name)
+                await interaction.response.send_message(f'Kanał o nazwie "{new_channel.name}" został dodany.')
+            except discord.Forbidden:
+                await interaction.response.send_message('Brak uprawnień do dodawania kanałów.')
+            except discord.HTTPException:
+                await interaction.response.send_message('Wystąpił błąd podczas tworzenia kanału.')
+
+        elif option == "del":
+            existing_channel = discord.utils.get(interaction.guild.channels, name=channel_name)
+
+            if existing_channel:
+                try:
+                    await existing_channel.delete()
+                    await interaction.response.send_message(f'Kanał o nazwie "{existing_channel.name}" został usunięty.')
+                except discord.Forbidden:
+                    await interaction.response.send_message('Brak uprawnień do usuwania kanałów.')
+                except discord.HTTPException:
+                    await interaction.response.send_message('Wystąpił błąd podczas usuwania kanału.')
+            else:
+                await interaction.response.send_message(f'Kanał o nazwie "{channel_name}" nie istnieje.')
+        else:
+            await interaction.response.send_message('Nieprawidłowa opcja. Dostępne opcje to "add" i "del".')
+    else:
+        await interaction.response.send_message('Nie masz odpowiednich uprawnień do zarządzania kanałami.')
+
+
+ 
+
+    logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
+
+
+    if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
+        print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!') # potrzebne jeśli chcemy sprawdzić co spowodowało dany błąd bez wchodzenia w logi ;p
 
 
 # startup bota
