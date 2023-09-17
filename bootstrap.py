@@ -72,7 +72,7 @@ class MyClient(discord.Client):
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f"[debug] Connecting with discord api...")
 
-    print(f'{botname}Logging in using {token[:18]}********** token')
+    print(f'{botname}Connecting using {token[:18]}********** discord bot token')
 
     async def on_ready(self): # on_ready to jest prosty event logger... po tym jesli on_ready zostanie wykonany( czyli bot sie odpali ) ma wykonać listę rzeczy np napisanie ze bot został załadowany i tak dalej...
         if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle    
