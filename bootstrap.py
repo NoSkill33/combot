@@ -92,13 +92,17 @@ class MyClient(discord.Client):
         print(f"{botname}Bot is ready!")
         #print(f'Logged on as {self.user}!')
 
+    async def on_guild_join(self, guild): # po dolaczeniu na nowy serwer wysyla wiadomosc powitalna na losowym kanale ( moze kiedys sie zrobi jakas inna metode wyboru )
+        randchannel = random.choice(guild.text_channels)
+        await randchannel.send("Hi 👋, I'm ComBot, https://github.com/NoSkill33/combot")
+
     async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
          messagelog(f'{message.author}: {message.content}')
          # Wykrywanie invite do discorda i usuwanie
          if message.guild:
              if 'discord.gg/' in message.content: # jesli zrobilibysmy https://discord.gg/ to wtedy jak ktos by usunal https:// mogl by juz wyslac a zaproszenie i tak by sie wyswietlilo
-                 #if message.author.guild_permissions.administrator:
-                    # return
+                 if message.author.guild_permissions.administrator:
+                    return
 
                  await message.delete()
                  await message.channel.send(f"{message.author.mention}, you're not allowed to send invite links here!")
