@@ -66,6 +66,7 @@ def messagelog(text):
 # początek classy bota
 class MyClient(discord.Client):
     # otwieranie oficjalnej strony bota tak zwana "reklama"
+    print(f'{botname}is starting...')
     if developermode == 0: # jeśli edytujemy kod == 0( == nie ) wtedy dopiero odpal aby nie spamiło NAM tym xd
         webbrowser.open_new_tab("https://github.com/NoSkill33/combot")
 
@@ -93,6 +94,14 @@ class MyClient(discord.Client):
 
     async def on_message(self, message): # tak samo jak z on_ready, jest to prosty even logger który czeka aż user napisze jakąś wiadomość jeśli napisze to wtedy zapisuje to w pliku tekstowym
          messagelog(f'{message.author}: {message.content}')
+         # Wykrywanie invite do discorda i usuwanie
+         if message.guild:
+             if 'discord.gg/' in message.content: # jesli zrobilibysmy https://discord.gg/ to wtedy jak ktos by usunal https:// mogl by juz wyslac a zaproszenie i tak by sie wyswietlilo
+                 #if message.author.guild_permissions.administrator:
+                    # return
+
+                 await message.delete()
+                 await message.channel.send(f"{message.author.mention}, you're not allowed to send invite links here!")
          #print(f'Message from {message.author}: {message.content}')
 
 # definicje
