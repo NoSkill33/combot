@@ -212,8 +212,7 @@ async def embedcommand(interaction: discord.Interaction, title: str, description
 # komenda na ping bota
 @tree.command(name = "ping", description = "komenda na ping")
 async def testcommand(interaction: discord.Interaction):
-    pinglatency = format(round(client.latency, 1))
-    await interaction.response.send_message(f'{interaction.user.id} Ping to {pinglatency}!')
+    await interaction.response.send_message(f'My latency is: {int(client.latency * 1000)}ms')
     logsave(f'{interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
