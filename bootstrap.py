@@ -66,7 +66,7 @@ def messagelog(text):
 # początek classy bota
 class MyClient(discord.Client):
     # otwieranie oficjalnej strony bota tak zwana "reklama"
-    print(f'{botname}is starting...')
+    print(f'{botname}initializing...')
     if developermode == 0: # jeśli edytujemy kod == 0( == nie ) wtedy dopiero odpal aby nie spamiło NAM tym xd
         webbrowser.open_new_tab("https://github.com/NoSkill33/combot")
 
