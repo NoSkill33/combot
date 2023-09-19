@@ -208,7 +208,6 @@ async def embedcommand(interaction: discord.Interaction, title: str, description
         print(f'[debug] {interaction.user.name}({interaction.user.id}) used {interaction.command.name} command!')
 
 
-
 # komenda na ping bota
 @tree.command(name = "ping", description = "komenda na ping")
 async def testcommand(interaction: discord.Interaction):
@@ -386,4 +385,4 @@ async def channel(interaction: discord.Interaction, option: str, channel_name: s
 
 
 # startup bota
-client.run(token) # token jest wklejany z pliku token.txt który każdy musi sobie sam stworzyć
+client.run(token) # token jest wklejany z pliku token.txt
