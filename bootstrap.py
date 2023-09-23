@@ -1,3 +1,10 @@
+######################
+###    important   ###
+######################
+
+#toadd: /botinfo
+#ta komenda ma posiadac info o czasie startu bota etc
+
 import discord
 from discord import app_commands
 from discord.utils import get
@@ -50,6 +57,16 @@ def logsave(text):
 
     with open(direct, 'a') as file:
         file.write("[" + actualdate + "] " + text + "\n")
+
+def membersave(text):
+    # na starcie logsave niech "zdobedzie" aktualna date lol
+    actualdate = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+    logs_folder = os.path.join(os.getcwd(), 'members')
+    os.makedirs(logs_folder, exist_ok=True)
+
+    direct = os.path.join(logs_folder, current_datetime + ".log")
+    with open(direct, 'a') as file:
+        file.write(text + "\n")
 
 def messagelog(text):
     # na starcie logsave niech "zdobedzie" aktualna date lol
@@ -110,9 +127,22 @@ class MyClient(discord.Client):
 
 # definicje
 intents = discord.Intents.default()
+intents.members = True
 intents.message_content = True
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
+
+# debug
+@tree.command(name="test", description="0")
+async def test(interaction: discord.Interaction):
+    # test
+    usercount = 0
+    for guild in client.guilds:
+        for member in guild.members:
+            usercount += 1
+            membersave(str(member))
+
+    await interaction.response.send_message(f'Saved {str(usercount)} members!', ephemeral=True)
 
 # komenda na kalulator
 @tree.command(name="calculator", description="Kalkulator")

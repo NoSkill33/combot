@@ -1,4 +1,4 @@
 @echo off
-md logs, messages
+md logs, messages, members
 echo done
 pause
