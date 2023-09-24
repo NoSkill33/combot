@@ -1,15 +1,7 @@
-######################
-###    important   ###
-######################
-
-#toadd: /botinfo
-#ta komenda ma posiadac info o czasie startu bota etc
-
 import discord
 from discord import app_commands
 from discord.utils import get
 
-import webbrowser
 import random
 import os
 import ctypes
@@ -20,8 +12,10 @@ from datetime import datetime
 
 # pobieranie aktualnej daty na starcie programu w celu stworzenia min. plików z logami itp
 current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+tootime = datetime.now()
 
 # definicje
+ownerid = 886353376957321307 # ...
 version = "[0.0.02] " # wersja bota ( kiedyś można dodać "checka" czy bot jest aktualny z wersja z githuba )
 botname = "[combot] " # nazwa bota z reguły będziemy z niej korzystać tylko do textu w konsoli ale kto wie
 developermode = 1 # ustawić na 0 kiedy nic nie aktualizujemy(czyli kiedy pushujemy zmiane na discord)!!! ( wtedy "reklama" naszego repozytorium z botem sie odpala na starcie programu )
@@ -84,8 +78,6 @@ def messagelog(text):
 class MyClient(discord.Client):
     # otwieranie oficjalnej strony bota tak zwana "reklama"
     print(f'{botname}initializing...')
-    if developermode == 0: # jeśli edytujemy kod == 0( == nie ) wtedy dopiero odpal aby nie spamiło NAM tym xd
-        webbrowser.open_new_tab("https://github.com/NoSkill33/combot")
 
     if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
         print(f"[debug] Connecting with discord api...")
@@ -99,14 +91,20 @@ class MyClient(discord.Client):
         print(f'{botname}Please wait...')
 
         # kolejność działań... najpierw najważniejsze rzeczy niech się wczytują a dopiero potem reszta
-        await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
-        await client.change_presence(activity=discord.CustomActivity('https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
+        try: # proboje...
+            synced = await tree.sync() # synchronizacja komend(?) inni to robią czemu my byśmy nie mieli
+            print(f'[debug] Synchronized {len(synced)} commands')
+        except Exception as x: # jesli sie nie powiedzie zwraca blad
+            print(f'[debug] {x}')
+        
+        await client.change_presence(activity=discord.CustomActivity(f'https://github.com/NoSkill33/combot')) # jak sam opis wskazuje... ustawienie statusu gry bota na link do naszego bota na githubie
         if developermode == 1: # jesli developermode to 1 ( czyli to z czego my mamy korzystać ) wtedy wykonaj, jesli nie to nie wykonuj i tyle
             print(f'[debug] Saved data & time: {str_current_datetime}') # sprawdzałem czy wszystko działa na ten moment niech zostanie... potrzebne jeśli chcesz coś sprawdzić i nie chcesz się pierdolić i sprawdzać kiedy bota odpaliłeś :)
             print(f'[debug] Listening to {len(client.guilds)} servers')
         
-        logsave(f'Logged on as {self.user}, lisetning to {len(client.guilds)} servers!')
-        print(f"{botname}Bot is ready!")
+        timetook = datetime.now() - tootime
+        logsave(f'Logged on as {self.user}, lisetning to {len(client.guilds)} servers! (Initialized in {timetook.seconds}s)')
+        print(f"{botname}Bot is ready! (Initialized in {timetook.seconds}s)")
         #print(f'Logged on as {self.user}!')
 
     async def on_guild_join(self, guild): # po dolaczeniu na nowy serwer wysyla wiadomosc powitalna na losowym kanale ( moze kiedys sie zrobi jakas inna metode wyboru )
@@ -117,14 +115,13 @@ class MyClient(discord.Client):
          messagelog(f'{message.author}: {message.content}')
          # Wykrywanie invite do discorda i usuwanie
          if message.guild:
-             if 'discord.gg/' in message.content: # jesli zrobilibysmy https://discord.gg/ to wtedy jak ktos by usunal https:// mogl by juz wyslac a zaproszenie i tak by sie wyswietlilo
-                 if message.author.guild_permissions.administrator:
+             if 'discord.gg' in message.content: # jesli zrobilibysmy https://discord.gg/ to wtedy jak ktos by usunal https:// mogl by juz wyslac a zaproszenie i tak by sie wyswietlilo
+                 if message.author.guild_permissions.administrator or message.author.id == ownerid:
                     return
 
                  await message.delete()
                  await message.channel.send(f"{message.author.mention}, you're not allowed to send invite links here!")
          #print(f'Message from {message.author}: {message.content}')
-
 # definicje
 intents = discord.Intents.default()
 intents.members = True
@@ -145,7 +142,7 @@ async def test(interaction: discord.Interaction):
     await interaction.response.send_message(f'Saved {str(usercount)} members!', ephemeral=True)
 
 # komenda na kalulator
-@tree.command(name="calculator", description="Kalkulator")
+@tree.command(name="calculator", description="calc")
 async def calculate(interaction: discord.Interaction, num1: str, operation: str, num2: str):
     if operation not in ['+', '-', '*', '/']:
         await interaction.response.send_message('Podaj prawidłową operację (+, -, *, /).')
@@ -303,7 +300,7 @@ async def iqcom(interaction: discord.Interaction):
 
     if interaction.user.id == 741339798500802572: # mieszko
         await interaction.response.send_message(f'Twoj wynik iq: {random.randint(125, 150)}!')
-    elif interaction.user.id == 886353376957321307: # noskill
+    elif interaction.user.id == ownerid: # noskill
         await interaction.response.send_message(f'Twoj wynik iq: {random.randint(125, 150)}!')
     else: # inni XD
         await interaction.response.send_message(f'Twoj wynik iq: {random.randint(15, 125)}!')
